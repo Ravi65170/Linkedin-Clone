@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { LoginAPI, GoogleSignInAPI } from "../api/AuthAPI";
-// import { RegisterAPI } from "../api/AuthAPI";
 import LinkedinLogo from "../assets/LinkedinLogo.png";
 import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ export default function LoginComponent() {
   const googleSignIn = () => {
     let response = GoogleSignInAPI();
     console.log(response);
-    // navigate("/home");
+    navigate("/home");
   };
 
   return (
