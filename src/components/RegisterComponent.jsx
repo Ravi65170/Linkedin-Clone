@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { RegisterAPI, GoogleSignInAPI } from "../api/AuthAPI";
+import { postUserData } from "../api/FirestoreAPI";
 import LinkedinLogo from "../assets/LinkedinLogo.png";
 import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +10,15 @@ import { toast } from "react-toastify";
 export default function RegisterComponent() {
   let navigate = useNavigate();
   const [credentails, seTCredentails] = useState({});
-  const login = async () => {
+  const register = async () => {
     try {
       let res = await RegisterAPI(credentails.email, credentails.password);
       toast.success("Account Created");
+      postUserData({
+        name: credentails.name,
+        email: credentails.email,
+      });
+      localStorage.setItem("userEmail", res.user.email);
       navigate("/home");
     } catch (err) {
       toast.error("Cannot Create your Account");
@@ -33,8 +39,17 @@ export default function RegisterComponent() {
         <div className="auth-inputs">
           <input
             onChange={(event) =>
+              seTCredentails({ ...credentails, name: event.target.value })
+            }
+            type="text"
+            className="common-input"
+            placeholder="Your Name"
+          />
+          <input
+            onChange={(event) =>
               seTCredentails({ ...credentails, email: event.target.value })
             }
+            type="Email"
             className="common-input"
             placeholder="Email or phone number"
           />
@@ -43,11 +58,12 @@ export default function RegisterComponent() {
             onChange={(event) =>
               seTCredentails({ ...credentails, password: event.target.value })
             }
+            type="Password"
             className="common-input"
             placeholder="Password(6 or more charecters)"
           />
         </div>
-        <button onClick={login} className="login-btn">
+        <button onClick={register} className="login-btn">
           Agree & Join
         </button>
       </div>

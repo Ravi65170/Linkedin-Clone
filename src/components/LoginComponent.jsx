@@ -13,6 +13,7 @@ export default function LoginComponent() {
     try {
       let res = await LoginAPI(credentails.email, credentails.password);
       toast.success("Signed in to Linkedin!");
+      localStorage.setItem("userEmail", res.user.email);
       navigate("/home");
     } catch (err) {
       toast.error("Please check your Credentails");
