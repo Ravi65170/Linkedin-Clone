@@ -3,7 +3,7 @@ import { postStatus, getStatus } from "../../../api/FirestoreAPI";
 import ModalComponent from "../Modal";
 import PostsCard from "../PostsCard";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
-import { getUniqueID } from "../../../helpers/getUniqueId";
+import getUniqueID from "../../../helpers/getUniqueId";
 import "../PostUpdate/index.scss";
 
 export default function PostStatus({ currentUser }) {
