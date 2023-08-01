@@ -4,6 +4,7 @@ import { postUserData } from "../api/FirestoreAPI";
 import LinkedinLogo from "../assets/LinkedinLogo.png";
 import GoogleButton from "react-google-button";
 import { useNavigate } from "react-router-dom";
+import getUniqueID from "../helpers/getUniqueId";
 import "../Sass/LoginComponent.scss";
 import { toast } from "react-toastify";
 
@@ -15,6 +16,7 @@ export default function RegisterComponent() {
       let res = await RegisterAPI(credentails.email, credentails.password);
       toast.success("Account Created");
       postUserData({
+        userID: getUniqueID(),
         name: credentails.name,
         email: credentails.email,
       });

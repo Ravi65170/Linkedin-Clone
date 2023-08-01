@@ -41,11 +41,14 @@ export default function PostStatus({ currentUser }) {
         status={status}
         sentStatus={sentStatus}
       />
-      <div>
-        {allStatus.map((posts) => {
-          return <PostsCard posts={posts} />;
-        })}
-      </div>
+
+      {allStatus.map((posts) => {
+        return (
+          <div key={posts.id}>
+            <PostsCard posts={posts} />
+          </div>
+        );
+      })}
     </div>
   );
 }
