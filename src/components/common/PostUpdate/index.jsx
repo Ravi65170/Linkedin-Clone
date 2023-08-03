@@ -18,6 +18,7 @@ export default function PostStatus({ currentUser }) {
       userEmail: userEmail,
       userName: currentUser.name,
       postID: getUniqueID(),
+      userID: currentUser.id,
     };
     await postStatus(object);
     await setModalOpen(false);
@@ -27,6 +28,7 @@ export default function PostStatus({ currentUser }) {
   useMemo(() => {
     getStatus(setAllStatus);
   }, []);
+
   return (
     <div className="post-status-main">
       <div className="post-status">
