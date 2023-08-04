@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
-  // getSingleStatus,
+  getSingleStatus,
   getSingleUser,
-  getStatus,
+  // getStatus,
 } from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { HiOutlinePencil } from "react-icons/hi";
@@ -32,22 +32,22 @@ export default function ProfileCard({ onEdit, currentUser }) {
     );
   };
 
+  // useMemo(() => {
+  //   getStatus(setAllStatus);
+  // }, []);
   useMemo(() => {
-    getStatus(setAllStatus);
-  }, []);
-  useMemo(() => {
-    // if (location?.state?.id) {
-    //   getSingleStatus(setAllStatus, location?.state?.id);
-    // }
+    if (location?.state?.id) {
+      getSingleStatus(setAllStatus, location?.state?.id);
+    }
 
     if (location?.state?.email) {
       getSingleUser(setCurrentProfile, location?.state?.email);
     }
   }, []);
 
-  const matchedStatus = allStatus.filter(
-    (status) => status.userEmail === currentProfile.email
-  );
+  // const matchedStatus = allStatus.filter(
+  //   (status) => status.userEmail === currentProfile.email
+  // );
 
   return (
     <>
@@ -68,7 +68,11 @@ export default function ProfileCard({ onEdit, currentUser }) {
             <img
               className="profile-image"
               onClick={() => setModalOpen(true)}
-              src={currentUser.imageLink}
+              src={
+                Object.values(currentProfile).length === 0
+                  ? currentUser.imageLink
+                  : currentProfile?.imageLink
+              }
               alt="profile-image"
             />
             <h3 className="userName">
@@ -127,7 +131,7 @@ export default function ProfileCard({ onEdit, currentUser }) {
       </div>
 
       <div className="post-status-main">
-        {matchedStatus.map((posts) => {
+        {allStatus.map((posts) => {
           return (
             <div key={posts.id}>
               <PostsCard posts={posts} />

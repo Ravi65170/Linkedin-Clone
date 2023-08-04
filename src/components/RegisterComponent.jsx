@@ -19,6 +19,8 @@ export default function RegisterComponent() {
         userID: getUniqueID(),
         name: credentails.name,
         email: credentails.email,
+        imageLink:
+          "https://fastly.picsum.photos/id/28/4928/3264.jpg?hmac=GnYF-RnBUg44PFfU5pcw_Qs0ReOyStdnZ8MtQWJqTfA",
       });
       localStorage.setItem("userEmail", res.user.email);
       navigate("/home");

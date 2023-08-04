@@ -1,36 +1,76 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, getAllUsers } from "../../../api/FirestoreAPI";
+import {
+  getAllUsers,
+  getCurrentUser,
+  deletePost,
+  getConnections,
+} from "../../../api/FirestoreAPI";
 import LikeButton from "../LikeButton";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import "./index.scss";
 
-export default function PostsCard({ posts, id }) {
+export default function PostsCard({ posts, id, getEditData }) {
   let navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
+
   useMemo(() => {
     getCurrentUser(setCurrentUser);
     getAllUsers(setAllUsers);
   }, []);
 
-  console.log(
-    allUsers
-      .filter((item) => item.id === posts.userID)
-      .map((item) => item.imageLink)[0]
-  );
-  return (
+  useEffect(() => {
+    getConnections(currentUser.id, posts.userID, setIsConnected);
+  }, [currentUser.id, posts.userID]);
+
+  return isConnected ? (
     <div className="posts-card" key={id}>
-      <p
-        className="name"
-        onClick={() =>
-          navigate("/profile", {
-            state: { id: posts?.userID, email: posts.userEmail },
-          })
-        }
-      >
-        {posts.userName}
-      </p>
-      <p className="timestamp">{posts.timeStamp}</p>
+      <div className="post-image-wrapper">
+        {currentUser.id === posts.userID ? (
+          <div className="action-container">
+            <BsPencil
+              size={20}
+              className="action-icon"
+              onClick={() => getEditData(posts)}
+            />
+            <BsTrash
+              size={20}
+              className="action-icon"
+              onClick={() => deletePost(posts.id)}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+        <img
+          className="profile-image"
+          src={
+            allUsers
+              .filter((item) => item.id === posts.userID)
+              .map((item) => item.imageLink)[0]
+          }
+          alt="profile-image"
+        />
+        <div>
+          <p
+            className="name"
+            onClick={() =>
+              navigate("/profile", {
+                state: { id: posts?.userID, email: posts.userEmail },
+              })
+            }
+          >
+            {allUsers.filter((user) => user.id === posts.userID)[0]?.name}
+          </p>
+          <p className="headline">
+            {allUsers.filter((user) => user.id === posts.userID)[0]?.headline}
+          </p>
+          <p className="timestamp">{posts.timeStamp}</p>
+        </div>
+      </div>
+
       <p className="status">{posts.status}</p>
       <LikeButton
         userId={currentUser.id}
@@ -38,5 +78,7 @@ export default function PostsCard({ posts, id }) {
         currentUser={currentUser}
       />
     </div>
+  ) : (
+    <></>
   );
 }

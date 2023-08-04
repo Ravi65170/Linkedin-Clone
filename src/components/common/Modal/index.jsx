@@ -8,6 +8,8 @@ const ModalComponent = ({
   sentStatus,
   setStatus,
   status,
+  isEdit,
+  updateStatus,
 }) => {
   return (
     <>
@@ -15,16 +17,22 @@ const ModalComponent = ({
         title="Create a post"
         centered
         open={modalOpen}
-        onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        onOk={() => {
+          setStatus("");
+          setModalOpen(false);
+        }}
+        onCancel={() => {
+          setStatus("");
+          setModalOpen(false);
+        }}
         footer={[
           <Button
-            onClick={sentStatus}
+            onClick={isEdit ? updateStatus : sentStatus}
             key="submit"
             type="primary"
             disabled={status.length > 0 ? false : true}
           >
-            Post
+            {isEdit ? "Update" : "Post"}
           </Button>,
         ]}
       >

@@ -7,6 +7,8 @@ import {
 } from "../../../api/FirestoreAPI";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { AiOutlineComment, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BsFillHandThumbsUpFill, BsHandThumbsUp } from "react-icons/bs";
+
 import "./index.scss";
 
 export default function LikeButton({ userId, postId, currentUser }) {
@@ -42,9 +44,9 @@ export default function LikeButton({ userId, postId, currentUser }) {
       <div className="like-comment">
         <div className="likes-comment-inner" onClick={handaLike}>
           {liked ? (
-            <AiFillHeart size={30} color="#0a66c2" />
+            <BsFillHandThumbsUpFill size={30} color="#0a66c2" />
           ) : (
-            <AiOutlineHeart size={30} />
+            <BsHandThumbsUp size={30} />
           )}
 
           <p className={liked ? "blue" : "black"}>Like</p>
@@ -81,7 +83,9 @@ export default function LikeButton({ userId, postId, currentUser }) {
                 <div className="all-comments">
                   <p className="name">{comm.name}</p>
                   <p className="comment">{comm.comment}</p>
-                  <p>•</p>
+                  {
+                    // <p>•</p>
+                  }
                   <p className="timestamp">{comm.timeStamp}</p>
                 </div>
               );

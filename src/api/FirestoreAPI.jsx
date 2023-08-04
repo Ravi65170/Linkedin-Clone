@@ -9,15 +9,16 @@ import {
   where,
   setDoc,
   deleteDoc,
+  // orderBy,
+  // serverTimestamp,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 let postsRef = collection(firestore, "posts");
 let userRef = collection(firestore, "users");
-
 let likeRef = collection(firestore, "likes");
-
 let commentsRef = collection(firestore, "comments");
+let connectionRef = collection(firestore, "connections");
 
 export const postStatus = (object) => {
   addDoc(postsRef, object)
@@ -59,20 +60,20 @@ export const getAllUsers = (setAllUsers) => {
   });
 };
 
-// export const getSingleStatus = (setAllStatus, id) => {
-//   try {
-//     const singlePostQuery = query(postsRef, where("userID", "==", id));
-//     onSnapshot(singlePostQuery, (response) => {
-//       setAllStatus(
-//         response.docs.map((docs) => {
-//           return { ...docs.data(), id: docs.id };
-//         })
-//       );
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+export const getSingleStatus = (setAllStatus, id) => {
+  try {
+    const singlePostQuery = query(postsRef, where("userID", "==", id));
+    onSnapshot(singlePostQuery, (response) => {
+      setAllStatus(
+        response.docs.map((docs) => {
+          return { ...docs.data(), id: docs.id };
+        })
+      );
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const getSingleUser = (setCurrentUser, email) => {
   const singleUserQuery = query(userRef, where("email", "==", email));
@@ -173,6 +174,59 @@ export const getComments = (postId, setComments) => {
         };
       });
       setComments(comments);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updatePost = (id, status) => {
+  let docToUpdate = doc(postsRef, id);
+  try {
+    updateDoc(docToUpdate, { status });
+    toast.success("Post has been updated!");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deletePost = (id) => {
+  let docToDelete = doc(postsRef, id);
+  try {
+    deleteDoc(docToDelete);
+    toast.success("Post has been Deleted!");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addConnection = (userId, targetId) => {
+  try {
+    let connectionToAdd = doc(connectionRef, `${userId}_${targetId}`);
+
+    setDoc(connectionToAdd, { userId, targetId });
+
+    toast.success("Connection Added!");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getConnections = (userId, targetId, setIsConnected) => {
+  try {
+    let connectionsQuery = query(
+      connectionRef,
+      where("targetId", "==", targetId)
+    );
+
+    onSnapshot(connectionsQuery, (response) => {
+      let connections = response.docs.map((doc) => doc.data());
+
+      const isConnected = connections.some(
+        (connection) => connection.userId === userId
+      );
+
+      setIsConnected(isConnected);
     });
   } catch (err) {
     console.log(err);
