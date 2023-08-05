@@ -103,7 +103,12 @@ export default function Topbar({ currentUser }) {
           <AiOutlineBell size={30} className="react-icon" />
         </div>
       )}
-      <img className="user-logo" src={user} alt="user" onClick={displayPopup} />
+      <img
+        className="user-logo"
+        src={currentUser.imageLink}
+        alt="user"
+        onClick={displayPopup}
+      />
 
       {searchInput.length === 0 ? (
         <></>

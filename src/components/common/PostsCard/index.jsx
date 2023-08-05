@@ -1,4 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { Button, Modal } from "antd";
+
 import { useNavigate } from "react-router-dom";
 import {
   getAllUsers,
@@ -14,6 +16,7 @@ export default function PostsCard({ posts, id, getEditData }) {
   let navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
+  const [imageModal, setImageModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
   useMemo(() => {
@@ -25,7 +28,7 @@ export default function PostsCard({ posts, id, getEditData }) {
     getConnections(currentUser.id, posts.userID, setIsConnected);
   }, [currentUser.id, posts.userID]);
 
-  return isConnected ? (
+  return isConnected || currentUser.id === posts.userID ? (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
         {currentUser.id === posts.userID ? (
@@ -71,12 +74,37 @@ export default function PostsCard({ posts, id, getEditData }) {
         </div>
       </div>
 
+      {posts.postImage ? (
+        <img
+          onClick={() => setImageModal(true)}
+          src={posts.postImage}
+          alt="post-image"
+          className="post-image"
+        />
+      ) : (
+        <></>
+      )}
+
       <p className="status">{posts.status}</p>
       <LikeButton
         userId={currentUser.id}
         postId={posts.id}
         currentUser={currentUser}
       />
+      <Modal
+        centered
+        open={imageModal}
+        onOk={() => setImageModal(false)}
+        onCancel={() => setImageModal(false)}
+        footer={[]}
+      >
+        <img
+          onClick={() => setImageModal(true)}
+          src={posts.postImage}
+          alt="post-image"
+          className="post-image"
+        />
+      </Modal>
     </div>
   ) : (
     <></>
