@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllUsers, addConnection } from "../api/FirestoreAPI";
 import ConnectedUsers from "./common/ConnectedUsers";
 import "../Sass/ConnectionsComponet.scss";

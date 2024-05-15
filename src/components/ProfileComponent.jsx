@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProfileCard from "./common/ProfileCard";
 import ProfileEdit from "./common/ProfileEdit";
 

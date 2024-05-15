@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LoginAPI, GoogleSignInAPI } from "../api/AuthAPI";
 import LinkedinLogo from "../assets/LinkedinLogo.png";
 import GoogleButton from "react-google-button";

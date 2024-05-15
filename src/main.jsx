@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { router } from "./Routes/index.jsx";
 import { RouterProvider } from "react-router-dom";
-import { app } from "./firebaseConfig";
+// import { app } from "./firebaseConfig";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-quill/dist/quill.snow.css";
